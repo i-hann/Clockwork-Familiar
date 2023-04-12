@@ -1,14 +1,14 @@
 # Clockwork-Familiar
 A simple Discord bot running out of an EC2 instance that contributes to a Dungeons and Dragons session in various ways.
 
-DEPENDENCIES:
+#Dependencies
   @discordjs/voice: 0.9.0
   @discord.js: 13.6.0
   fs: 0.0.1
   path: 0.12.7
 
 
-CONFIG FILE:
+#Config
 clockwork_familiar_config.json:
   {
     "token": "<Your bot token>",
@@ -18,12 +18,12 @@ clockwork_familiar_config.json:
   }
   
   
-ADD BOT TO DISCORD SERVER:
+#Add bot to Discord server
   1. Select the bot in the Discord Developer Portal and go to OAuth2 -> URL Generator. Check the boxes for "bot" and "applications.commands". Copy the URL and paste it into the browser. Select the Discord server for the bot to join.
   2. In clockwork_familiar.config.json, update "bot_channel_id" to the ID of the text channel where you want the bot to read commands and send messages. Update "voice_channel_id" to the ID of the voice channel where you want the bot to play music.
   
   
-AWS EC2 SETUP:
+#AWS EC2 Setup
   1. Launch an Ubuntu EC2 instance (free tier) with the User Data:
         sudo apt update
         sudo apt install nodejs
@@ -44,7 +44,7 @@ AWS EC2 SETUP:
             Winter Woods (Forest, Snow).mp3
 
   
-RUNNING THE BOT:
+#Running the Bot in EC2
   1. In the npm directory, use the CLI to run the command:
         pm2 start clockwork_familiar.js --max-memory-restart 100M
   2. (Optional) Add a max memory threshold:
@@ -53,7 +53,7 @@ RUNNING THE BOT:
           --cron-restart="0 8 * * 0-7"
   
   
-USING THE BOT:
+#Using the Bot in Discord
 The bot currently supports the following text commands:
     !help - Shows all available commands
     !tracks <tag> - Show list of audio tracks matching <tag>

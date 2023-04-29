@@ -13,7 +13,7 @@ The bot currently supports the following text commands:
     !npc <i> - Describes an NPC with name partially matching <i> from the currently loaded table
 ```
 
-#Dependencies
+## Dependencies
 ```
   @discordjs/voice: 0.9.0
   @discord.js: 13.6.0

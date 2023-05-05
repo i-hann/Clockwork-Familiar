@@ -13,13 +13,14 @@ The bot currently supports the following text commands:
     !npc <i> - Describes an NPC with name partially matching <i> from the currently loaded table
 ```
 
-#Dependencies
+#Code Dependencies
 ```
-  @discordjs/voice: 0.9.0
-  @discord.js: 13.6.0
+  @discordjs/voice@0.16.0
+  @discord.js@13.6.0
   fs: 0.0.1
   path: 0.12.7
-  aws-sdk: 2.1368.0
+  moment@2.29.4
+  aws-sdk@2.1368.0
 ```
 
 ## Config File
@@ -57,6 +58,7 @@ clockwork_familiar_config.json:
         npm install fs
         npm install path
         npm install pm2
+        npm install moment
   ```
   2. Set up an SSH connection to your EC2 instance (look up tutorials if needed).
   3. Copy the following files to your /home/ubuntu/ directory (I use WinSCP for this, look up a tutorial if needed):

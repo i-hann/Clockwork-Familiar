@@ -75,10 +75,14 @@ clockwork_familiar_config.json:
   ```
 
 
-## AWS - DynamoDB Setup
+## AWS - DynamoDB
   1. You can create as many NPC tables as you wish. Make sure they are all in the same AWS region, and the region is correctly noted in clockwork_familiar_config.json. 
   2. The items in the tables should have a Name (string partition key - name of the NPC), Description (string), and Picture (string - an imgur link).
-  3. Create a Role for your EC2 Instance to access DynamoDB with ReadOnly privileges (look up a tutorial if needed)
+  
+  
+## AWS - IAM
+  1. Create a User that can access DynamoDB with ReadOnly privileges (look up a tutorial if needed).
+  2. Assign the User to your EC2 Instance.
   
 
 ## Running the Bot in EC2

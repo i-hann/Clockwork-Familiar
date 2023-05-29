@@ -1,7 +1,7 @@
 //Dependencies
 const { Client, Intents } = require('discord.js');
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, AudioPlayerStatus, getVoiceConnection } = require('@discordjs/voice');
-const { prefix, token, commands_channel_id, npcs_channel_id, descriptions_channel_id, voice_channel_id, npc_tables, aws_region } = require('./clockwork_familiar_config.json');
+const { prefix, token, commands_channel_id, npcs_channel_id, descriptions_channel_id, loot_channel_id, voice_channel_id, npc_tables, aws_region } = require('./clockwork_familiar_config.json');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
@@ -165,8 +165,8 @@ client.on('messageCreate', async (message) => {
         return client.channels.cache.get(commands_channel_id).send("```" + '\n' +
             "COMMANDS" + '\n' +
             '\n' +
-            "Name            |Description                              |" + '\n' +
-            "----------------   |-----------------------------------------|" + '\n' +
+            "Command            |Description                              |" + '\n' +
+            "-------------------|-----------------------------------------|" + '\n' +
             "!tracks            |Show full list of audio tracks           |" + '\n' +
             "!tracks <tag>      |Show list of audio tracks matching <tag> |" + '\n' +
             "!play <id>         |Play audio track matching <id>           |" + '\n' +
@@ -174,6 +174,8 @@ client.on('messageCreate', async (message) => {
             "!show npctables    |Show NPC Tables that can be loaded       |" + '\n' +
             "!load npctable <i> |Load NPC Table matching <i>              |" + '\n' +
             "!npc <i>           |Describe NPC with name matching <i>      |" + '\n' +
+            "!desc <i>          |Reformat and paste descriptive text <i>  |" + '\n' +
+            "!loot <i>          |Reformat and paste loot text <i>         |" + '\n' +
             "```");
     }
 
@@ -262,21 +264,57 @@ client.on('messageCreate', async (message) => {
 
     //!show npctables
     if (message.content.startsWith("!show npctables")) {
+        try {
             show_npc_tables();
+        } catch (err) {
+            console.log(moment().format() + ": Error executing !show npctables: " + err.message);
+        }
     }
 
     //!load npctable <arg>
     if (message.content.startsWith("!load npctable")) {
-        const argIndex = message.content.indexOf("npctable") + 8;
-        const arg = message.content.substring(argIndex).trim();
-        load_npc_table(arg);
+        try {
+            const argIndex = message.content.indexOf("npctable") + 8;
+            const arg = message.content.substring(argIndex).trim();
+            load_npc_table(arg);
+        } catch (err) {
+            console.log(moment().format() + ": Error executing !load npctable: " + err.message);
+        }
     }
 
     //!npc <arg>
-    if (message.content.startsWith("!npc")) {
-        const argIndex = message.content.indexOf("!npc") + 4;
-        const arg = message.content.substring(argIndex).trim();
-        describe_npc(arg);
+    if (message.content.startsWith("!npc ")) {
+        try {
+            const argIndex = message.content.indexOf("!npc") + 4;
+            const arg = message.content.substring(argIndex).trim();
+            describe_npc(arg);
+        } catch (err) {
+            console.log(moment().format() + ": Error executing !npc: " + err.message);
+        }
+    }
+
+    //!desc <text>
+    if (message.content.startsWith("!desc ")) {
+        try {
+            const argIndex = message.content.indexOf("!desc") + 5;
+            const arg = message.content.substring(argIndex).trim();
+            const description = await fixSpacing(arg);
+            client.channels.cache.get(descriptions_channel_id).send(description);
+        } catch (err) {
+            console.log(moment().format() + ": Error executing !desc: " + err.message);
+        }
+    }
+
+    //!loot <text>
+    if (message.content.startsWith("!loot ")) {
+        try {
+            const argIndex = message.content.indexOf("!loot") + 5;
+            const arg = message.content.substring(argIndex).trim();
+            const loot = await fixSpacing(arg);
+            client.channels.cache.get(loot_channel_id).send(loot);
+        } catch (err) {
+            console.log(moment().format() + ": Error executing !loot: " + err.message);
+        }
     }
 })
 
@@ -476,4 +514,23 @@ async function describe_npc(arg) {
     } catch (err) {
         console.log(moment().format() + ": Error in describe_npc(): " + err.message);
     }
+}
+
+async function fixSpacing(str) {
+    return new Promise((resolve, reject) => {
+        try {
+            //Remove tabs and new lines
+            var regexp1 = /\t|\r?\n/g;
+            var newStr = str.replace(regexp1, " ");
+
+            //Remove multi-spaces
+            var regexp2 = /\s{2,}/g;
+            newStr = newStr.replace(regexp2, " ");
+
+            resolve(newStr);
+        } catch (err) {
+            console.log(moment().format() + ": Error in fixSpacing(): " + err.message);
+            reject(err);
+        }
+    })
 }

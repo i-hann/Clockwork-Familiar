@@ -11,6 +11,8 @@ The bot currently supports the following text commands:
     !show npctables - Shows NPC Tables that can be loaded from DynamoDB
     !load npctable <i> - Loads an NPC Table with table name partially matching <i>
     !npc <i> - Describes an NPC with name partially matching <i> from the currently loaded table
+    !desc <i> - Reformat and paste descriptive text <i> in the descriptions channel
+    !loot <i> - Reformat and paste loot text <i> in the loot channel 
 ```
 
 ## Code Dependencies
@@ -31,7 +33,8 @@ clockwork_familiar_config.json:
     "prefix": "!",
     "commands_channel_id": "<Your channel id for bot commands>",
     "npcs_channel_id": "<Your channel id for npc descriptions and pictures>",
-    "descriptions_channel_id": "<Your channel id for location descriptions">,
+    "descriptions_channel_id": "<Your channel id for location descriptions>",
+    "loot_channel_id": "<Your channel id for listing loot>",
     "voice_channel_id": "<Your channel id for voice>",
     "npc_tables": [
 	    "<Name of DynamoDB NPC table>",
